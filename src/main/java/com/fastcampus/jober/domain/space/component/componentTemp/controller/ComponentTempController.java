@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -67,18 +68,18 @@ public class ComponentTempController {
     @GetMapping("/view/{spaceWallId}")
     public ResponseEntity<ResponseDTO<ComponentTempResponseDTO>> componentTempDetails(
         @PathVariable("spaceWallId") Long spaceWallId,
-        @RequestBody ModifyDTO modifyDTO) {
+        @RequestParam Long componentTempId) {
 
         System.out.println("컴포넌트 템프 조회");
         System.out.println(spaceWallId);
-        System.out.println(modifyDTO.getComponentTempId());
+        System.out.println(componentTempId);
 
-        if (!componentTempService.checkComponentTempExists(modifyDTO.getComponentTempId())) {
+        if (!componentTempService.checkComponentTempExists(componentTempId)) {
             throw new ComponentTempException(ErrorCode.INVALID_COMPONENTTEMPID);
         }
 
         ComponentTempResponseDTO componentTempResponseDTO = componentTempService.findComponentTemp(
-            modifyDTO.getComponentTempId());
+            componentTempId);
 
         return new ResponseEntity<>(
             new ResponseDTO<>(HttpStatus.OK, "임시 컴포넌트가 조회 되었습니다.", componentTempResponseDTO),
